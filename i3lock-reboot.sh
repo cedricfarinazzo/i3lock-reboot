@@ -10,24 +10,25 @@ if [ -z "$1" ]; then
         exit 1 
 else
         COMMAND=$1
-        echo "To run : " $COMMAND
+	echo "To run : " $COMMAND
 fi
 
-TIME=2520
+TIME=10m
 
 if [ -z "$2" ]; then
 	echo "Default sleeping time is " $TIME
 else
-	$TIME=$2
+	TIME=$2
 	echo "Sleeping time set to " $TIME
 fi
 
 while [ 1 -eq 1 ]; do
-	$($COMMAND) &
+	sh $COMMAND &
+	PID=$!
 	sleep $TIME
-	if [ pgrep -x $COMMAND > /dev/null ]; then
+	if kill -0 $PID ;then
 		echo "Reboot !"
-		ps -ef | grep $COMMAND | grep -v grep | awk '{print $2}' | xargs -r kill -9
+		kill -9 $PID
 	else
 		echo "Unlock !"
 		exit 0
