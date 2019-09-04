@@ -29,6 +29,8 @@ while [ 1 -eq 1 ]; do
 	if kill -0 $PID ;then
 		echo "Reboot !"
 		kill -9 $PID
+		sh $COMMAND &
+		PID=$!
 	else
 		echo "Unlock !"
 		exit 0
